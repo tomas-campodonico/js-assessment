@@ -11,7 +11,29 @@ define([ 'jquery' ], function($) {
     },
 
     manipulateRemoteData : function(url) {
-    	console.log(url);
+    	var def = $.Deferred();
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', url, true);
+		
+		xhr.onload = function (e) {
+			if (this.status === 200) {
+				$.getJSON(url, function(data) {
+					var people = [];
+					for (var i=0; i<data.people.length; i++) {
+						people.push(data.people[i].name);
+					}
+					def.resolve(people.sort());
+				});
+			}
+		};
+	 
+		xhr.onerror = function (e) {
+			def.reject(e);
+		};
+ 
+		xhr.send();
+		
+		return def;
     }
   };
 });

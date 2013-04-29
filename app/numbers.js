@@ -21,7 +21,14 @@ define(function() {
     },
 
     multiply: function(a, b) {
-        return a * b;
+		var cant_dec_a = String(a).indexOf('.') - 1, //si a = 0.0001 entonces cant_dec_a = 0;
+			cant_dec_b = String(b).indexOf('.') - 1, //si b = 3 entonces cant_dec_b = -1;
+			
+			atens = Math.pow(10,String(a).length - cant_dec_a), //10^6 = 1,000,000
+			btens = Math.pow(10,String(b).length - cant_dec_b), //10^1 = 10
+			
+			result = (a * atens) * (b * btens) / (atens * btens); //100 * 30 / 10,000,000 = 0.0003
+		return result;
     }
   };
 });
